@@ -13,7 +13,7 @@
     <div class="rambling-header">
       <img class="avatar" src="https://i.imgur.com/uZTb7P4.jpeg" alt="头像" loading="lazy"/>
       <div class="header-info">
-        <span class="username">弹性泡泡</span>
+        <span class="username">奥利奥去利</span>
         <span class="date">{{ date }}</span>
       </div>
     </div>
@@ -52,7 +52,7 @@ export default {
   },
   computed:{
     ...mapState({
-       uname: state => state.user.username,
+       //uname: state => state.user.username,
        role: state => state.user.role
     }),
   },
@@ -84,7 +84,7 @@ export default {
   },
   methods:{
     handleDelRam(id){
-      this.$bus.$emit('deleteRamOrMsg','ram',id)
+      this.$bus.$emit('deleteRamOrMsgOrAtc','ram',id)
     },
 
 /*     handleLike(id){
@@ -107,8 +107,8 @@ export default {
 /* 删除按钮样式 */
 .delete-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   border: none;
   background: transparent;
   font-size: 18px;

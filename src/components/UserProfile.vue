@@ -6,8 +6,8 @@
       <div class="avatar-box">
         <img class="avatar" src='https://i.imgur.com/uZTb7P4.jpeg' alt="用户头像" />
         <div class="user-info">
-          <h2 class="username">弹性泡泡</h2>
-          <p class="bio">全栈开发爱好者｜热爱前端与动画</p>
+          <h2 class="username">奥利奥去利</h2>
+          <p class="bio">这个人很懒，什么都没有留下</p>
         </div>
       </div>
     </div>
@@ -26,6 +26,7 @@ export default {
   name: "UserProfile",
   computed: {
     ...mapState(['articles']),
+
     userArticles() {
       // 模拟过滤 userId=1 的文章
       return this.articles.filter(a => a.userId === 1)

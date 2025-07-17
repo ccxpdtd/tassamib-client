@@ -8,16 +8,28 @@
         @click="goToArticle(article.id)"
       >
 
-        <img class="cover" src="https://picsum.photos/seed/vue/600/300" alt="封面" loading="lazy"/> 
+        <!-- <img class="cover" src="https://picsum.photos/seed/vue/600/300" alt="封面" loading="lazy"/>  -->
 
         <div class="content">
-          <h2 class="title">{{ article.title }}</h2>
+          <div class="title_delete_group">
+            <h2 class="title">{{ article.title }}</h2>
+            <button class="delete-btn"
+              v-show='role==="admin"'
+              @click="handleDelMsg(article.id,$event)"
+            >
+              ✕
+          </button>
+        </div>
           <p class="description">{{ article.description }}</p>
           <div class="meta">
             <span class="author">{{ article.author }}</span>
             <span class="date">{{ article.date }}</span>
           </div>
         </div>
+
+        
+
+
       </div>
     </div>
     <PublishButton></PublishButton>
@@ -25,6 +37,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import PublishButton from '../components/Ad_PublishButton.vue'
 export default {
   name: "ArticleList",
@@ -33,11 +46,21 @@ export default {
   },
   data() {
     return {
-      articles: [],
+
     };
   },
+  
   mounted(){
-    this.fetchArticles()
+    this.$bus.$emit('showRamOrMsgOrAtc','atc')
+  },
+  computed:{
+    ...mapState({
+      uname: state => state.user.username,
+      role: state => state.user.role
+    }),
+    ...mapState({
+      articles: state => state.articles,
+    })
   },
   methods: {
     goToArticle(id) {
@@ -45,21 +68,10 @@ export default {
       this.$router.push({ name:'ArticleList', query: { id } });
     },
 
-    async fetchArticles() {
-
-      const url='/api/articles'
-      try{
-        const isOK=await  this.$store.dispatch('get', url)
-        
-        if(isOK){
-          this.articles = this.$store.state.articles
-        }
-      }catch (err) {
-        alert('请求失败')
-        console.error(err)
-      }
-    },
-
+    handleDelMsg(id,event){
+      this.$bus.$emit('deleteRamOrMsgOrAtc','atc',id)
+      event.stopPropagation();
+    }
   },
 };
 </script>
@@ -79,7 +91,7 @@ export default {
 }
 
 .article-card {
-  height: 370px;
+  height: auto; 
   display: flex;
   flex-direction: column;
   background: white;
@@ -101,20 +113,23 @@ export default {
 }
 
 .content {
-  padding: 20px;
+  padding: 35px;
 }
 
 .title {
+  flex:1;
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
 }
 
 .description {
   color: #666;
   font-size: 15px;
   line-height: 1.6;
-  margin-bottom: 12px;
+  margin:0px;
+  padding:10px 0;
+  /* margin-bottom: 12px; */
 }
 
 .meta {
@@ -122,5 +137,23 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   color: #999;
+  margin-top:10px;
+}
+.title_delete_group{
+  display: flex;
+  flex-direction: row;
+}
+/* 删除按钮样式 */
+.delete-btn {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.3s;
+  line-height: 1;
+}
+.delete-btn:hover {
+  color: #f00;
 }
 </style>

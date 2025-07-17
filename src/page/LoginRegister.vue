@@ -75,16 +75,15 @@ export default {
       const {uname, psw, confirmPsw} = this.form
       if(!this.isLogin && psw !== confirmPsw) return alert('两次密码不一致')
       
-      // const url = this.isLogin ? "/api/login" : "/api/register"
+      const url = this.isLogin ? "/api/login" : "/api/register"
       const payload = {uname, psw}
-      const url='/api/login'
 
       try {
         const res = await this.$store.dispatch('post', { url, payload })
 
         if (res.ok&&this.isLogin) {
           this.$router.push('/home')
-          localStorage.setItem('token', res.token)
+          sessionStorage.setItem('token', res.token)
         }
 
         alert(res.msg)

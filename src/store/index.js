@@ -9,7 +9,7 @@ const actions = {
     context.commit('SETUSER', value)
   },
   async post(context, value) {
-    // console.log(value);
+
     try {
       const res = await axios.post(value.url, value.payload)
       console.log('post请求结束', res.data)

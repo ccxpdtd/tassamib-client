@@ -48,9 +48,7 @@ export default {
 
   },
   mounted(){
-    this.$bus.$emit('showRamOrMsg','ram')
-    
-    
+    this.$bus.$emit('showRamOrMsgOrAtc','ram') 
   },
   beforeDestroy(){
     

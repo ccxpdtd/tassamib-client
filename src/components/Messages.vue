@@ -67,11 +67,11 @@ export default {
      ...mapState(['messages']) 
   },
   mounted() {
-    this.$bus.$emit('showRamOrMsg','msg')
+    this.$bus.$emit('showRamOrMsgOrAtc','msg')
   },
   methods: {
     handleDelMsg(id){
-      this.$bus.$emit('deleteRamOrMsg','msg',id)
+      this.$bus.$emit('deleteRamOrMsgOrAtc','msg',id)
     },
 
     async submitMessage(){
@@ -112,6 +112,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-bottom: 20px;
 }
 
 .textarea {
@@ -161,6 +162,7 @@ export default {
 }
 
 .message-card {
+  margin:13px 0 ;
   display: flex;
   align-items: flex-start;
   gap: 16px;
@@ -189,13 +191,14 @@ export default {
   flex: 1;
 }
 .meta {
+  margin-top:5px;
   font-weight: bold;
   font-size: 14px;
   display: flex;
   align-items: center;
 }
 .username {
-  font-size: 14px;
+  font-size: 15px;
 }
 .dot {
   margin: 0 6px;
@@ -208,8 +211,8 @@ export default {
 /* 删除按钮样式 */
 .delete-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   border: none;
   background: transparent;
   font-size: 18px;
@@ -224,8 +227,8 @@ export default {
   color: #f00;
 }
 .text {
-  font-size: 14px;
-  margin-top: 4px;
+  font-size: 15px;
+  padding: 20px 45px 25px 0px;
   color: #444;
 }
 </style>

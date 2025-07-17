@@ -38,6 +38,7 @@ export default {
       imageUrl: ''
     }
   },
+  
   methods: {
     cancel() {
       this.content = ''

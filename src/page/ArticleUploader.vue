@@ -101,6 +101,7 @@ export default {
       this.form.author= ''//作者this.
       this.fileName=''
       
+      this.$router.push('/home/articles')
     }
   }
 }

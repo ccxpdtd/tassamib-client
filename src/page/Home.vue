@@ -2,7 +2,7 @@
 
   <!-- 页面 -->
   <div class="page">
-    <!-- <ParticlesDemo :quantity="25" /> -->
+    <ParticlesDemo :quantity="25" />
 
     <!-- 导航栏 -->
     <div class="navbar-wrapper">
@@ -22,8 +22,9 @@
 
 <script>
 import 'animate.css'
+import {jwtDecode} from 'jwt-decode'
 import Navbar from '../../../15_blog_test_2.0/src/components/Navbar.vue'
-// import ParticlesDemo from '../components/ParticlesDemo.vue'
+import ParticlesDemo from '../components/ParticlesDemo.vue'
 import {mapState} from 'vuex'
 
 
@@ -32,7 +33,7 @@ export default {
   name: 'HomeDemo',
   components: {
     Navbar,
-    // ParticlesDemo,
+    ParticlesDemo,
   },
   computed:{
     ...mapState({
@@ -40,21 +41,33 @@ export default {
     }),
   },
   created() {
-    const token = localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split('.')[1]))
-        this.$store.dispatch('setUser',payload)
+        const payload = jwtDecode(token)
+        this.$store.dispatch('setUser', payload)
       } catch (err) {
         console.error('Token 解析失败:', err)
+        sessionStorage.removeItem('token')
       }
-    }console.log('Home/mounted:store:',this.$store)
-    
+    }
   },
+
+
   methods:{
-    async showRamOrMsg(type){
-      console.log('show',type);
-      const url=type==='ram'?'/api/get_ramblings':'/api/message'
+    async showRamOrMsgOrAtc(type){
+      var url
+      switch(type){
+        case 'ram':
+          url='/api/get_ramblings'
+          break
+        case 'msg':
+          url='/api/message'
+          break
+        case 'atc':
+          url='/api/articles'
+          break
+      }
       try{
         await this.$store.dispatch('get',url)
       }catch (err) {
@@ -62,12 +75,23 @@ export default {
         console.error(err)
       }
     },
-    async deleteRamOrMsg(type,target_id){
+    async deleteRamOrMsgOrAtc(type,target_id){
       const payload={target_id}
-      const url=(type==='ram'?'/api/delete_rambling':'/api/delete_message')
+      var url
+      switch(type){
+        case 'ram':
+          url='/api/delete_rambling'
+          break
+        case 'msg':
+          url='/api/delete_message'
+          break
+        case 'atc':
+          url='/api/delete_article'
+          break
+      }
       try {
         await this.$store.dispatch('post',{url,payload})
-        this.$bus.$emit('showRamOrMsg',type)
+        this.$bus.$emit('showRamOrMsgOrAtc',type)
       } catch (err) {
         alert('请求失败')
         console.error(err)
@@ -90,7 +114,7 @@ export default {
       }
       try {
         await this.$store.dispatch('post',{url,payload})
-        this.$bus.$emit('showRamOrMsg',type)
+        this.$bus.$emit('showRamOrMsgOrAtc',type)
       } catch (err) {
         alert('请求失败')
         console.error(err)
@@ -99,17 +123,21 @@ export default {
   },
   
   mounted(){
-    this.$bus.$on('deleteRamOrMsg',this.deleteRamOrMsg)
-    this.$bus.$on('showRamOrMsg',this.showRamOrMsg)
+    this.$bus.$on('deleteRamOrMsgOrAtc',this.deleteRamOrMsgOrAtc)
+    this.$bus.$on('showRamOrMsgOrAtc',this.showRamOrMsgOrAtc)
     this.$bus.$on('publishRamOrMsg',this.publishRamOrMsg)
     // this.$bus.$on('handleLike',this.handleLike)
 
-    this.$bus.$emit('showRamOrMsg','msg')
-    this.$bus.$emit('showRamOrMsg','ram')
+    this.$bus.$emit('showRamOrMsgOrAtc','msg')
+    this.$bus.$emit('showRamOrMsgOrAtc','ram')
+    this.$bus.$emit('showRamOrMsgOrAtc','atc')
+
+    console.log('Home/mouted：',this.$store.state);
+    
   },
   beforeDestroy(){
-    this.$bus.$off('deleteRamOrMsg',this.deleteRamOrMsg)
-    this.$bus.$off('showRamOrMsg',this.showRamOrMsg)
+    this.$bus.$off('deleteRamOrMsgOrAtc',this.deleteRamOrMsgOrAtc)
+    this.$bus.$off('showRamOrMsgOrAtc',this.showRamOrMsgOrAtc)
     this.$bus.$off('publishRamOrMsg',this.publishRamOrMsg)
     // this.$bus.$off('handleLike',this.handleLike)
   },
