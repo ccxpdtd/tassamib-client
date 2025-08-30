@@ -82,11 +82,9 @@ export default {
         const res = await this.$store.dispatch('post', { url, payload })
 
         if (res.ok&&this.isLogin) {
-          this.$router.push('/home')
+          this.$router.push('/home/blogger_home')
           sessionStorage.setItem('token', res.token)
         }
-
-        alert(res.msg)
 
       } catch (err) {
         alert('请求失败')

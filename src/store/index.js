@@ -9,7 +9,6 @@ const actions = {
     context.commit('SETUSER', value)
   },
   async post(context, value) {
-
     try {
       const res = await axios.post(value.url, value.payload)
       console.log('post请求结束', res.data)
@@ -23,14 +22,18 @@ const actions = {
     try {
       const res = await axios.get(url)
       console.log('get请求结束', res.data)
+      switch (url) {
+        case '/api/get_messages':
+          context.commit('SETMESSAGES', res.data)
+          break
+        case '/api/get_articles':
+          context.commit('SETARTICLES', res.data)
+          break
+        case '/api/get_ramblings':
+          context.commit('SETRAMBLINGS', res.data)
+          break
 
-      if (url === '/api/message')
-        context.commit('SETCOMMENTS', res.data)
-      else if (url === '/api/articles')
-        context.commit('SETARTICLES', res.data)
-      else if (url === '/api/get_ramblings')
-        context.commit('SETRAMBLINGS', res.data)
-
+      }
       return res.data.ok // ✅ 返回响应数据
     } catch (err) {
       console.error(err)
@@ -44,15 +47,15 @@ const mutations = {
     state.user = value
   },
 
-  SETCOMMENTS(state, value) {
+  SETMESSAGES(state, value) {
     state.messages = [...value.data];
   },
   SETARTICLES(state, value) {
-    state.articles = value.data;
+    state.articles = [...value.data];
   },
   SETRAMBLINGS(state, value) {
     state.ramblings = [...value.data]  // ✅ 用新引用确保触发响应
-  }
+  },
 
 }
 

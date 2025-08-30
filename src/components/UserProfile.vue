@@ -4,53 +4,33 @@
     <div class="user-header card">
       <div class="background"></div>
       <div class="avatar-box">
-        <img class="avatar" src='https://i.imgur.com/uZTb7P4.jpeg' alt="用户头像" />
+        <img class="avatar" src='https://i.imgs.ovh/2025/07/19/MSLCd.jpeg' alt="用户头像" loading="lazy"/>
         <div class="user-info">
           <h2 class="username">奥利奥去利</h2>
           <p class="bio">这个人很懒，什么都没有留下</p>
         </div>
       </div>
     </div>
-
-
-
 </template>
 
 <script>
-import { marked } from 'marked'
 import { mapState } from 'vuex'
-import hljs from 'highlight.js'
-import 'highlight.js/styles/github.css'
-
 export default {
   name: "UserProfile",
   computed: {
     ...mapState(['articles']),
-
     userArticles() {
       // 模拟过滤 userId=1 的文章
       return this.articles.filter(a => a.userId === 1)
     }
   },
   methods: {
-    renderMarkdown(mdText) {
-      marked.setOptions({
-        highlight: function (code, lang) {
-          if (lang && hljs.getLanguage(lang)) {
-            return hljs.highlight(code, { language: lang }).value
-          }
-          return hljs.highlightAuto(code).value
-        }
-      })
-      return marked(mdText)
-    }
+
   }
 }
 </script>
 
 <style scoped>
-
-
 .user-header {
   position: relative;
   height: 480px;
@@ -59,7 +39,7 @@ export default {
   border-radius: 16px;
 }
 .background {
-  background-image: url('https://i.imgur.com/MzxuQhf.jpeg');
+  background-image: url('https://i.imgs.ovh/2025/07/19/MSFtO.jpeg');
   background-size: cover;
   background-position: center;
   height: 350px;

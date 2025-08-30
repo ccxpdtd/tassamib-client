@@ -6,7 +6,6 @@
       </li>
     </ul>
   </nav>
-
 </template>
 
 <script>
@@ -19,6 +18,7 @@ export default {
         { id: 2, text: '博客', path: '/home/articles' },
         { id: 3, text: '碎碎念', path: '/home/ramblings' },
         { id: 4, text: '留言板', path: '/home/message' },
+        { id: 5, text: '登录', path: '/login' },
       ],
     };
   },
@@ -29,26 +29,21 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 .fixed-nav {
-
-
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 60px;
   background-color: rgba(149, 150, 151, 0.1);
-  padding: 20px 0;
   z-index: 1000;
-  
   font-family: 'Inter', sans-serif;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(4px);
-  display: flex;               /* 启用 Flex 布局 */
-  flex-direction: column;     /* 垂直排列子元素 */
-  justify-content: center;    /* 垂直方向居中 nav-list */
-  align-items: center;        /* 水平方向居中 nav-list */
+  display: flex;
+  align-items: center;       /* 垂直居中导航项 */
+  justify-content: center;   /* 水平居中导航列表 */
 }
 
 .nav-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;       /* 横向排列 */
   align-items: center;
   margin: 0;
   padding: 0;
@@ -56,7 +51,7 @@ export default {
 }
 
 .nav-item {
-  margin: 40px 0;
+  margin: 0 50px;            /* 左右间距 */
 }
 
 .nav-font {

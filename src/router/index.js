@@ -18,7 +18,7 @@ const router = new VueRouter({
     {
       path: '/home',
       component: Home,
-      meta: { requiresAuth: true },
+      // meta: { requiresAuth: true },
       children: [
         {
           path: 'blogger_home',
@@ -49,7 +49,7 @@ const router = new VueRouter({
     },
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/home/blogger_home'
     },
     {
       path: '/login',

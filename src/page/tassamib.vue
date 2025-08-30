@@ -8,18 +8,13 @@
       <div>
         <MusicCard></MusicCard>
       </div>
-      
+
     </div>
-    
-<!--     <div class="message-card two" >
-        <Blogger></Blogger>
-      </div> -->
 
     <div class="message-card skill" >
       <SkillEnergy></SkillEnergy>
     </div>
 
-      
     
   </div>
 
@@ -29,14 +24,12 @@
 import OrbitLineAvatar from '../components/OrbitLineAvatar.vue'
 import SkillEnergy from '../components/SkillEnergy.vue'
 import MusicCard from '../components/MusicCard.vue'
-// import Blogger from '../components/Blogger.vue'
 export default {
   name: "TassamibDemo",
   components:{
     OrbitLineAvatar,
     SkillEnergy,
     MusicCard,
-    // Blogger
   }
 };
 </script>

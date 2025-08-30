@@ -17,7 +17,6 @@
 
 <script>
 import { marked } from 'marked'
-
 import { mapState } from 'vuex'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
@@ -48,16 +47,8 @@ export default {
       }
     }
   },
-    mounted() {
-      this.$nextTick(() => {
-        const descriptionElement = this.$refs.description;
-        console.log('Description Element:', descriptionElement.innerHTML);  // 确保渲染后的内容
-      });
-    },
   methods: {
     renderMarkdown(mdText) {
-
-      console.log('Markdown Content:', mdText);  // 确保内容没有丢失
       marked.setOptions({
         highlight: function (code, lang) {
           if (lang && hljs.getLanguage(lang)) {
@@ -79,7 +70,7 @@ export default {
   gap: 30px;
   max-width: 800px;
   margin: 50px auto;
-  padding: 0 0px;
+  padding: 0 20px;
 }
 
 .article-card {
@@ -87,7 +78,7 @@ export default {
   flex-direction: column;
   background: white;
   border-radius: 16px;
-  overflow: visible;
+  overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: transform 0.3s ease;
@@ -118,8 +109,6 @@ export default {
   font-size: 15px;
   line-height: 1.6;
   margin-bottom: 12px;
-  max-height: none;  /* 确保没有高度限制 */
-  overflow: visible; /* 确保内容不被截断 */
 }
 
 .meta {

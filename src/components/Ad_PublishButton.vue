@@ -27,15 +27,15 @@ export default {
 <style scoped>
 /* From Uiverse.io by elijahgummer */ 
 button {
-  width:120px;
+  max-width:120px;
   height:50px;
   font: inherit;
   background-color: #f0f0f0;
   border: 0;
   color: #242424;
   border-radius: 0.5em;
-  font-size: 1.35rem;
-  padding: 0.375em 1em;
+  font-size: 15px;
+  padding: 10px 20px;
   font-weight: 600;
   text-shadow: 0 0.0625em 0 #fff;
   box-shadow: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,

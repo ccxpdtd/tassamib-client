@@ -11,7 +11,7 @@
 
     <!-- 顶部：头像、用户名、时间 -->
     <div class="rambling-header">
-      <img class="avatar" src="https://i.imgur.com/uZTb7P4.jpeg" alt="头像" loading="lazy"/>
+      <img class="avatar" src="https://i.imgs.ovh/2025/07/19/MSLCd.jpeg" alt="头像" loading="lazy"/>
       <div class="header-info">
         <span class="username">奥利奥去利</span>
         <span class="date">{{ date }}</span>
@@ -41,24 +41,20 @@
 
 <script>
 import {mapState} from 'vuex'
-//import BtnLike from './BtnLike.vue'
-//import BtnComment from './BtnComment.vue'
 export default {
   name: 'MomentsCard',
   data(){
     return{
-      //  likeCount: 0
+
     }
   },
   computed:{
     ...mapState({
-       //uname: state => state.user.username,
        role: state => state.user.role
     }),
   },
   components:{
-    //BtnLike,
-    //BtnComment,
+
   },
   props: {
     id:{
@@ -84,12 +80,9 @@ export default {
   },
   methods:{
     handleDelRam(id){
-      this.$bus.$emit('deleteRamOrMsgOrAtc','ram',id)
+      this.$bus.$emit('handlePost','/api/delete_rambling',{id})
+      this.$bus.$emit('handleGet','/api/get_ramblings')
     },
-
-/*     handleLike(id){
-      this.$bus.$emit('handleLike',id)
-    } */
    
   },
 }

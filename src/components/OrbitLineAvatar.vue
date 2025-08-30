@@ -35,7 +35,7 @@
 
       <!-- 中心头像 -->
       <div class="avatar">
-        <img src="https://i.imgur.com/uZTb7P4.jpeg" alt="avatar" />
+        <img src="https://i.imgs.ovh/2025/07/19/MSLCd.jpeg" alt="avatar" />
       </div>
     </div>
     </transition>

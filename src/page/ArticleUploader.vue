@@ -85,7 +85,6 @@ export default {
         this.username = '请填写完整信息并上传 Markdown 文件'
         return
       }
-      const url='/api/uploadArticle'
       const payload = {
         uname: this.uname,
         title: this.form.title,
@@ -93,14 +92,8 @@ export default {
         author: this.form.author,
         content: this.Content
       }
-
-      this.$store.dispatch('post',{url,payload})
-
-      this.form.title= ''//标题
-      this.form.description= ''//简介
-      this.form.author= ''//作者this.
-      this.fileName=''
-      
+      this.$bus.$emit('handlePost','/api/uploadArticle',payload)
+      this.$bus.$emit('handleGet','/api/get_articles')
       this.$router.push('/home/articles')
     }
   }
@@ -137,6 +130,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 
 label {

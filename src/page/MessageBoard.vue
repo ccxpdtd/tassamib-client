@@ -1,41 +1,43 @@
 <template>
-  <div class="page">
-    <div class="page-left">
-      <Messages></Messages>
-    </div>
-<!--     <div class="page-right">
-      <Blogger></Blogger>
-      <NotificationList></NotificationList>
-    </div> -->
+  <div class="message-board-wrapper">
+    <PublishMessage />
+    <MessageList @del-msg="handleDelMsg" @del-reply="handleDelReply"/>
   </div>
 </template>
 
-<script>
-import Messages from '../components/Messages.vue'
-// import Blogger from '../components/Blogger.vue'
-// import NotificationList from '../components/NotificationList.vue'
+<script scoped>
+import PublishMessage from '../components/PublishMessage.vue';
+import MessageList from '../components/MessagesList.vue';
+
 export default {
-  name:'MessageBoard',
-  components:{
-    Messages,
-    // Blogger,
-    // NotificationList,
+  name: "CommentDemo",
+  components: {
+    PublishMessage,
+    MessageList,
+  },
+  methods: {
+    handleDelMsg(id) {
+      this.$bus.$emit('handlePost', '/api/delete_message', { id });
+      this.$bus.$emit('handleGet', '/api/get_messages');
+    },
+    handleDelReply(id) {
+      this.$bus.$emit('handlePost', '/api/delete_reply', { id });
+      this.$bus.$emit('handleGet', '/api/get_messages');
+    }
+  },
+  mounted() {
+    this.$bus.$emit('handleGet', '/api/get_messages');
   }
-}
+};
 </script>
 
 <style scoped>
-.page{
-  margin-top: 25px;
+.message-board-wrapper {
+  width: 60%;
+  max-width: 600px;
+  margin: 0 auto;
   display: flex;
-  flex-direction: row;
-
+  flex-direction: column;
+  gap: 16px;
 }
-.page-left{
-  width:90%;
-  margin:0 auto;
-}
-/* .page-right{
-  flex:1;
-} */
 </style>

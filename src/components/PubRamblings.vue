@@ -54,7 +54,8 @@ export default {
         img: this.imageUrl,
       }
 
-      this.$bus.$emit('publishRamOrMsg','ram',payload)
+      this.$bus.$emit('handlePost','/api/publish_rambling',payload)
+      this.$bus.$emit('handleGet','/api/get_ramblings')
 
       this.cancel()
     },

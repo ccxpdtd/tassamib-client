@@ -48,7 +48,7 @@ export default {
 
   },
   mounted(){
-    this.$bus.$emit('showRamOrMsgOrAtc','ram') 
+    this.$bus.$emit('handleGet','/api/get_ramblings')
   },
   beforeDestroy(){
     

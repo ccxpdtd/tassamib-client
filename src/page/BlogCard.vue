@@ -26,13 +26,11 @@
             <span class="date">{{ article.date }}</span>
           </div>
         </div>
-
-        
-
-
       </div>
     </div>
-    <PublishButton></PublishButton>
+    <div class="btn-publish">
+      <PublishButton></PublishButton>
+    </div>
   </div>
 </template>
 
@@ -51,16 +49,14 @@ export default {
   },
   
   mounted(){
-    this.$bus.$emit('showRamOrMsgOrAtc','atc')
+    this.$bus.$emit('handleGet','/api/get_articles')
   },
   computed:{
     ...mapState({
       uname: state => state.user.username,
-      role: state => state.user.role
-    }),
-    ...mapState({
+      role: state => state.user.role,
       articles: state => state.articles,
-    })
+    }),
   },
   methods: {
     goToArticle(id) {
@@ -69,7 +65,8 @@ export default {
     },
 
     handleDelMsg(id,event){
-      this.$bus.$emit('deleteRamOrMsgOrAtc','atc',id)
+      this.$bus.$emit('handlePost','/api/delete_article',{id})
+      this.$bus.$emit('handleGet','/api/get_articles')
       event.stopPropagation();
     }
   },
@@ -79,13 +76,13 @@ export default {
 <style scoped>
 .article-page{
   display:flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 .article-list {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  width:80%;
+  width:60%;
   margin: 50px auto;
   padding: 0 20px;
 }
@@ -129,6 +126,8 @@ export default {
   line-height: 1.6;
   margin:0px;
   padding:10px 0;
+  white-space: pre-line;
+
   /* margin-bottom: 12px; */
 }
 
@@ -156,4 +155,11 @@ export default {
 .delete-btn:hover {
   color: #f00;
 }
+.btn-publish {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;  /* 确保按钮盖在其他内容上 */
+}
+
 </style>
