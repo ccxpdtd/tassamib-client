@@ -13,7 +13,7 @@ export default {
   },
   created() {
     const id = this.$route.query.id
-    axios.get(`http://localhost:9001/api/get_article/${id}`).then(res => {
+    axios.get(`/api/get_article/${id}`).then(res => {
       console.log('res', res);
 
       this.content = res.data.content; // 数据库里存的纯 Markdown

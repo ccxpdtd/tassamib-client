@@ -7,9 +7,7 @@
         <div class="content">
           <div class="title_delete_group">
             <h2 class="title">{{ article.title }}</h2>
-            <button class="delete-btn" v-show='role === "admin"' @click="handleDelMsg(article.id, $event)">
-              ✕
-            </button>
+
           </div>
           <p class="description">{{ article.description }}</p>
           <div class="meta">
@@ -20,19 +18,16 @@
       </div>
     </div>
     <div class="btn-publish">
-      <PublishButton></PublishButton>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import PublishButton from '../components/Ad_PublishButton.vue'
+
 export default {
   name: "ArticleList",
-  components: {
-    PublishButton
-  },
+
   data() {
     return {
 
@@ -55,11 +50,7 @@ export default {
       this.$router.push({ name: 'ArticleList', query: { id } });
     },
 
-    handleDelMsg(id, event) {
-      this.$bus.$emit('handlePost', '/api/delete_article', { id })
-      this.$bus.$emit('handleGet', '/api/get_articles')
-      event.stopPropagation();
-    }
+
   },
 };
 </script>

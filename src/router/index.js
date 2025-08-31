@@ -7,7 +7,7 @@ import BlogCard from '../page/BlogCard.vue'
 // import OrbitLineAvatar from '../components/OrbitLineAvatar.vue'
 import MessageBoard from '../page/MessageBoard.vue'
 
-import ArticleUploader from '../page/ArticleUploader.vue'
+
 import ArticleList from '../page/ArticleList.vue'
 import Ramblings from '../page/Ramblings.vue'
 import tassamib from '../page/tassamib.vue'
@@ -41,10 +41,7 @@ const router = new VueRouter({
           name: 'ArticleList',
           component: ArticleList,
         },
-        {
-          path: 'article_upload',
-          component: ArticleUploader,
-        },
+
       ]
     },
     {
