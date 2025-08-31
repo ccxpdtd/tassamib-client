@@ -1,25 +1,16 @@
+<!-- 文章列表 -->
 <template>
   <div class="article-page">
     <div class="article-list">
-      <div
-        class="article-card"
-        v-for="(article, index) in articles"
-        :key="index"
-        @click="goToArticle(article.id)"
-      >
-
-        <!-- <img class="cover" src="https://picsum.photos/seed/vue/600/300" alt="封面" loading="lazy"/>  -->
+      <div class="article-card" v-for="(article, index) in articles" :key="index" @click="goToArticle(article.id)">
 
         <div class="content">
           <div class="title_delete_group">
             <h2 class="title">{{ article.title }}</h2>
-            <button class="delete-btn"
-              v-show='role==="admin"'
-              @click="handleDelMsg(article.id,$event)"
-            >
+            <button class="delete-btn" v-show='role === "admin"' @click="handleDelMsg(article.id, $event)">
               ✕
-          </button>
-        </div>
+            </button>
+          </div>
           <p class="description">{{ article.description }}</p>
           <div class="meta">
             <span class="author">{{ article.author }}</span>
@@ -35,11 +26,11 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 import PublishButton from '../components/Ad_PublishButton.vue'
 export default {
   name: "ArticleList",
-  components:{
+  components: {
     PublishButton
   },
   data() {
@@ -47,11 +38,11 @@ export default {
 
     };
   },
-  
-  mounted(){
-    this.$bus.$emit('handleGet','/api/get_articles')
+
+  mounted() {
+    this.$bus.$emit('handleGet', '/api/get_articles')
   },
-  computed:{
+  computed: {
     ...mapState({
       uname: state => state.user.username,
       role: state => state.user.role,
@@ -61,12 +52,12 @@ export default {
   methods: {
     goToArticle(id) {
       // 你可以用 vue-router 进行跳转
-      this.$router.push({ name:'ArticleList', query: { id } });
+      this.$router.push({ name: 'ArticleList', query: { id } });
     },
 
-    handleDelMsg(id,event){
-      this.$bus.$emit('handlePost','/api/delete_article',{id})
-      this.$bus.$emit('handleGet','/api/get_articles')
+    handleDelMsg(id, event) {
+      this.$bus.$emit('handlePost', '/api/delete_article', { id })
+      this.$bus.$emit('handleGet', '/api/get_articles')
       event.stopPropagation();
     }
   },
@@ -74,21 +65,22 @@ export default {
 </script>
 
 <style scoped>
-.article-page{
-  display:flex;
+.article-page {
+  display: flex;
   flex-direction: column;
 }
+
 .article-list {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  width:60%;
+  width: 60%;
   margin: 50px auto;
   padding: 0 20px;
 }
 
 .article-card {
-  height: auto; 
+  height: auto;
   display: flex;
   flex-direction: column;
   background: white;
@@ -114,7 +106,7 @@ export default {
 }
 
 .title {
-  flex:1;
+  flex: 1;
   font-size: 20px;
   font-weight: bold;
   margin: 0 0 10px 0;
@@ -124,8 +116,8 @@ export default {
   color: #666;
   font-size: 15px;
   line-height: 1.6;
-  margin:0px;
-  padding:10px 0;
+  margin: 0px;
+  padding: 10px 0;
   white-space: pre-line;
 
   /* margin-bottom: 12px; */
@@ -136,12 +128,14 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   color: #999;
-  margin-top:10px;
+  margin-top: 10px;
 }
-.title_delete_group{
+
+.title_delete_group {
   display: flex;
   flex-direction: row;
 }
+
 /* 删除按钮样式 */
 .delete-btn {
   border: none;
@@ -152,14 +146,16 @@ export default {
   transition: color 0.3s;
   line-height: 1;
 }
+
 .delete-btn:hover {
   color: #f00;
 }
+
 .btn-publish {
   position: fixed;
   right: 20px;
   bottom: 20px;
-  z-index: 1000;  /* 确保按钮盖在其他内容上 */
+  z-index: 1000;
+  /* 确保按钮盖在其他内容上 */
 }
-
 </style>

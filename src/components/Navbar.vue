@@ -37,13 +37,16 @@ export default {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(4px);
   display: flex;
-  align-items: center;       /* 垂直居中导航项 */
-  justify-content: center;   /* 水平居中导航列表 */
+  align-items: center;
+  /* 垂直居中导航项 */
+  justify-content: center;
+  /* 水平居中导航列表 */
 }
 
 .nav-list {
   display: flex;
-  flex-direction: row;       /* 横向排列 */
+  flex-direction: row;
+  /* 横向排列 */
   align-items: center;
   margin: 0;
   padding: 0;
@@ -51,7 +54,8 @@ export default {
 }
 
 .nav-item {
-  margin: 0 50px;            /* 左右间距 */
+  margin: 0 50px;
+  /* 左右间距 */
 }
 
 .nav-font {

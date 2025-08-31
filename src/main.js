@@ -8,6 +8,10 @@ import router from './router/index.js'
 import store from './store/index.js'
 Vue.use(VueRouter)
 
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+
+Vue.use(mavonEditor)
 
 new Vue({
   render: h => h(App),
