@@ -1,3 +1,5 @@
+<!-- 文章内容展示 -->
+
 <template>
   <div class="acticle-view-box">
     <mavon-editor v-model="content" :toolbarsFlag="false" :subfield="false" :editable="false" defaultOpen="preview" />
