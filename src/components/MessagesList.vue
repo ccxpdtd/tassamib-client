@@ -1,10 +1,6 @@
 <template>
   <transition-group name="slide-down" tag="div" class="message-list">
-    <div
-      v-for="(message) in messages"
-      :key="message.id"
-      class="message-card"
-    >
+    <div v-for="(message) in messages" :key="message.id" class="message-card">
       <div class="avatar">
         {{ message.uname ? message.uname.charAt(0).toUpperCase() : '👤' }}
       </div>
@@ -16,11 +12,8 @@
           <span class="time">{{ message.created_at }}</span>
 
           <!-- 删除按钮 -->
-          <button
-            class="delete-btn"
-            v-show='role==="admin"||uname===message.username'
-            @click="$emit('del-msg', message.id)"
-          >
+          <button class="delete-btn" v-show='role === "admin" || uname === message.username'
+            @click="$emit('del-msg', message.id)">
             ✕
           </button>
         </div>
@@ -28,33 +21,21 @@
 
         <!-- 回复框架，嵌入在每条留言内 -->
         <div class="reply-section">
-          <div
-            class="reply-item"
-            v-for="reply in message.replies"
-            :key="reply.id"
-          >
+          <div class="reply-item" v-for="reply in message.replies" :key="reply.id">
             <div class="reply-inner">
               <span class="reply-username">{{ reply.username || '匿名用户' }}</span>
               <span class="reply-dot">·</span>
               <span class="reply-time">{{ reply.created_at }}</span>
               <div class="reply-text">{{ reply.content }}</div>
-              <button
-                class="delete-btn comment"
-                v-show='role==="admin"||uname===reply.username'
-                @click="$emit('del-reply', reply.id)"
-              >
+              <button class="delete-btn comment" v-show='role === "admin" || uname === reply.username'
+                @click="$emit('del-reply', reply.id, reply.message_id)">
                 ✕
               </button>
             </div>
           </div>
 
           <div class="reply-input-wrapper">
-            <input
-              type="text"
-              class="reply-input"
-              v-model="commentMap[message.id]"
-              placeholder="写下你的回复..."
-            />
+            <input type="text" class="reply-input" v-model="commentMap[message.id]" placeholder="写下你的回复..." />
             <button class="reply-submit-btn" @click="handleComment(message.id)">发送</button>
           </div>
         </div>
@@ -68,7 +49,7 @@
 import { mapState } from 'vuex';
 export default {
   name: "MessageList",
-  data(){
+  data() {
     return {
       commentMap: {}
     }
@@ -80,7 +61,7 @@ export default {
       messages: state => state.messages
     }),
   },
-  methods:{
+  methods: {
     handleComment(message_id) {
       const content = this.commentMap[message_id];
       if (!content) return;
@@ -111,10 +92,12 @@ export default {
 .slide-down-leave-active {
   transition: all 0.3s ease;
 }
+
 .slide-down-enter {
   opacity: 0;
   transform: translateY(-20px);
 }
+
 .slide-down-enter-to {
   opacity: 1;
   transform: translateY(0);
@@ -133,6 +116,7 @@ export default {
     0 2px 4px rgba(0, 0, 0, 0.05), 0 12px 24px rgba(0, 0, 0, 0.05);
   position: relative;
 }
+
 .message-card:hover {
   transform: scale(1.03);
 }
@@ -147,9 +131,11 @@ export default {
   justify-content: center;
   border-radius: 16px;
 }
+
 .message-content {
   flex: 1;
 }
+
 .meta {
   margin-top: 5px;
   font-weight: bold;
@@ -157,15 +143,18 @@ export default {
   display: flex;
   align-items: center;
 }
+
 .username {
   font-size: 17.5px;
   font-weight: 500;
   color: rgb(93, 93, 93);
 }
+
 .dot {
   margin: 0 6px;
   color: gray;
 }
+
 .time {
   font-size: 12px;
   color: gray;
@@ -184,6 +173,7 @@ export default {
   padding: 0;
   line-height: 1;
 }
+
 .delete-btn:hover {
   color: #f00;
 }

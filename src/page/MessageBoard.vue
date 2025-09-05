@@ -1,13 +1,14 @@
 <template>
   <div class="message-board-wrapper">
     <PublishMessage />
-    <MessageList @del-msg="handleDelMsg" @del-reply="handleDelReply"/>
+    <MessageList @del-msg="handleDelMsg" @del-reply="handleDelReply" />
   </div>
 </template>
 
 <script scoped>
 import PublishMessage from '../components/PublishMessage.vue';
 import MessageList from '../components/MessagesList.vue';
+
 
 export default {
   name: "CommentDemo",
@@ -20,8 +21,11 @@ export default {
       this.$bus.$emit('handlePost', '/api/delete_message', { id });
       this.$bus.$emit('handleGet', '/api/get_messages');
     },
-    handleDelReply(id) {
-      this.$bus.$emit('handlePost', '/api/delete_reply', { id });
+    handleDelReply(id, mid) {
+
+      const payload = { id, mid }
+
+      this.$bus.$emit('handlePost', '/api/delete_reply', payload);
       this.$bus.$emit('handleGet', '/api/get_messages');
     }
   },
