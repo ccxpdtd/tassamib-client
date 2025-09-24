@@ -1,11 +1,6 @@
 <template>
-  <div class="form-card">
-    <textarea
-      v-model="form.message"
-      class="textarea"
-      placeholder="写点什么吧..."
-    ></textarea>
-
+  <div class="message-pubulish-container">
+    <textarea v-model="form.message" class="textarea" placeholder="写点什么吧..."></textarea>
     <button class="submit-btn" @click="submitMessage">留言</button>
   </div>
 </template>
@@ -28,8 +23,8 @@ export default {
         uname: this.$store.state.user.username,
         msg: this.form.message
       };
-      this.$bus.$emit('handlePost', '/api/publish_message', payload);
-      this.$bus.$emit('handleGet', '/api/get_messages');
+      this.$store.dispatch('post', { url: '/api/publish_message', payload })
+      this.$store.dispatch('get', '/api/get_messages')
       this.form.message = '';
     }
   }
@@ -37,16 +32,16 @@ export default {
 </script>
 
 <style scoped>
-.form-card {
+.message-pubulish-container {
   background: white;
   border-radius: 20px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03),
     0 2px 4px rgba(0, 0, 0, 0.05), 0 12px 24px rgba(0, 0, 0, 0.05);
-  padding: 20px;
   display: flex;
   flex-direction: column;
+  padding: 20px;
   gap: 12px;
-  margin-bottom: 20px;
+
 }
 
 .textarea {
@@ -71,6 +66,7 @@ export default {
   cursor: pointer;
   transition: all 0.3s;
 }
+
 .submit-btn:hover {
   background: #1473e6;
 }

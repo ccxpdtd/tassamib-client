@@ -1,5 +1,5 @@
 <template>
-  <div class="article-container">
+  <div class="article-detail-container">
     <!-- 目录侧边栏 -->
     <aside class="toc">
       <ul>
@@ -15,12 +15,14 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
+// import { mapState } from 'vuex'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css' // 高亮样式，可换其他主题
 
 export default {
+  name: 'articleDetail',
   data() {
     return {
       content: "",
@@ -28,14 +30,21 @@ export default {
       toc: []
     }
   },
-  created() {
-    const id = this.$route.query.id
-    axios.get(`/api/get_article/${id}`).then(res => {
-      this.content = res.data.content
-      this.generateHtmlAndToc()
-    })
+  mounted() {
+    this.getArticle()
   },
   methods: {
+    async getArticle() {
+      const id = this.$route.query.id
+      try {
+        const article = await this.$store.dispatch('get', `/api/get_article/${id}`)
+        this.content = article.content
+        this.generateHtmlAndToc()
+      } catch (error) {
+        console.log(error);
+      }
+
+    },
     generateHtmlAndToc() {
       const md = new MarkdownIt({
         html: true,
@@ -91,29 +100,30 @@ export default {
 </script>
 
 <style>
-.article-container {
+.article-detail-container {
   display: flex;
   width: 90%;
+  height: 100%;
   margin: 20px auto;
+
 }
 
 /* 目录固定侧边栏 */
 .toc {
   position: sticky;
   top: 80px;
-  min-width: 300px;
+  max-width: 380px;
   margin-right: 20px;
   max-height: calc(100vh - 40px);
   overflow-y: auto;
   background: #f9f9f9;
-
   border-radius: 6px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .toc ul {
   list-style: none;
-  padding: 50px 30px;
+  padding: 30px 30px;
   margin: 0;
 }
 

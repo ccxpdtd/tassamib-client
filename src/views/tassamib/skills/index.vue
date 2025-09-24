@@ -1,36 +1,16 @@
 <template>
-  <div class="wrapper">
+  <div class="skill-container">
     <div class="inner" :style="`--quantity: ${skills.length};`">
-      <div
-        v-for="(skill, index) in skills"
-        :key="index"
-        class="card"
-        :style="`--index: ${index}; --color-card: ${skill.color};`"
-      >
+      <div v-for="(skill, index) in skills" :key="index" class="card"
+        :style="`--index: ${index}; --color-card: ${skill.color};`">
         <div class="img">
           <div class="first-content">{{ skill.name }}</div>
           <div class="second-content">
             <svg width="80" height="80">
-              <circle
-                cx="40"
-                cy="40"
-                r="30"
-                stroke="#eee"
-                stroke-width="8"
-                fill="none"
-              />
-              <circle
-                cx="40"
-                cy="40"
-                r="30"
-                :stroke="skill.colorRGB"
-                stroke-width="8"
-                fill="none"
-                stroke-linecap="round"
-                :stroke-dasharray="188.4"
-                :stroke-dashoffset="188.4 - (188.4 * skill.level / 100)"
-                transform="rotate(-90 40 40)"
-              />
+              <circle cx="40" cy="40" r="30" stroke="#eee" stroke-width="8" fill="none" />
+              <circle cx="40" cy="40" r="30" :stroke="skill.colorRGB" stroke-width="8" fill="none"
+                stroke-linecap="round" :stroke-dasharray="188.4"
+                :stroke-dashoffset="188.4 - (188.4 * skill.level / 100)" transform="rotate(-90 40 40)" />
             </svg>
             <div class="percent-text">{{ skill.level }}%</div>
           </div>
@@ -47,15 +27,13 @@ export default {
     return {
       skills: [
         { name: "Vue", level: 85, color: "204, 255, 229", colorRGB: "#8ef9fc" },
-        { name: "JavaScript", level: 90, color: "255, 255, 153", colorRGB: "#8efccc" },
+        { name: "JavaScript", level: 85, color: "255, 255, 153", colorRGB: "#8efccc" },
+        { name: "Typescript", level: 85, color: "47, 140, 200", colorRGB: "#8efccc" },
         { name: "Node.js", level: 75, color: "255, 204, 153", colorRGB: "#8efc9d" },
-        { name: "CSS", level: 88, color: "178, 102, 255", colorRGB: "#d7fc8e" },
-        { name: "HTML", level: 92, color: "153, 204, 255", colorRGB: "#fcfc8e" },
+        { name: "CSS", level: 80, color: "178, 102, 255", colorRGB: "#d7fc8e" },
+        { name: "HTML", level: 80, color: "153, 204, 255", colorRGB: "#fcfc8e" },
         { name: "MySQL", level: 70, color: "224, 224, 224", colorRGB: "#fcd08e" },
         { name: "Git", level: 60, color: "252, 142, 142", colorRGB: "#fc8e8e" },
-        
-        
-        
       ],
     };
   },
@@ -63,14 +41,14 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
+.skill-container {
   width: 100%;
   height: 450px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .inner {
@@ -88,10 +66,12 @@ export default {
   transform: perspective(var(--perspective));
   animation: rotating 25s linear infinite;
 }
+
 @keyframes rotating {
   from {
     transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(0);
   }
+
   to {
     transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(1turn);
   }
@@ -141,6 +121,7 @@ export default {
 .img:hover .first-content {
   opacity: 0;
 }
+
 .img:hover .second-content {
   opacity: 1;
 }

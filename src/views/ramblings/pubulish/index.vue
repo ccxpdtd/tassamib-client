@@ -1,5 +1,5 @@
 <template>
-  <div class="post-card card">
+  <div class="rambling-publish-container card">
     <!-- 顶部：取消 + 发送 -->
     <div class="top-bar">
       <button class="btn cancel" @click="cancel">取消</button>
@@ -7,11 +7,7 @@
     </div>
 
     <!-- 中部：输入区域 -->
-    <textarea
-      v-model="content"
-      class="input"
-      placeholder="写点什么吧..."
-    ></textarea>
+    <textarea v-model="content" class="input" placeholder="写点什么吧..."></textarea>
 
     <!-- 底部：表情 + 图片上传 -->
     <div class="bottom-bar">
@@ -38,7 +34,7 @@ export default {
       imageUrl: ''
     }
   },
-  
+
   methods: {
     cancel() {
       this.content = ''
@@ -49,13 +45,13 @@ export default {
         alert('内容不能为空')
         return
       }
-      const payload={
+      const payload = {
         content: this.content,
         img: this.imageUrl,
       }
 
-      this.$bus.$emit('handlePost','/api/publish_rambling',payload)
-      this.$bus.$emit('handleGet','/api/get_ramblings')
+      this.$store.dispatch('post', { url: '/api/publish_rambling', payload })
+      this.$store.dispatch('get', '/api/get_ramblings')
 
       this.cancel()
     },
@@ -73,16 +69,17 @@ export default {
 </script>
 
 <style scoped>
-.post-card {
-  padding: 16px;
+.rambling-publish-container {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
   display: flex;
   flex-direction: column;
+
+  padding: 16px;
+  margin: 0 auto;
   gap: 12px;
-  margin: 50px auto;
-  /* width:100%; */
 }
 
 /* 顶部按钮 */

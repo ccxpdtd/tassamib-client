@@ -1,17 +1,13 @@
 <template>
   <div class="rambling-card">
     <!-- 右上角删除按钮 -->
-    <button
-      class="delete-btn"
-      @click="handleDelRam(id)"
-      v-show='role==="admin"'
-    >
+    <button class="delete-btn" @click="handleDelRam(id)" v-show='role === "admin"'>
       ✕
     </button>
 
     <!-- 顶部：头像、用户名、时间 -->
     <div class="rambling-header">
-      <img class="avatar" src="https://i.imgs.ovh/2025/07/19/MSLCd.jpeg" alt="头像" loading="lazy"/>
+      <img class="avatar" src="https://i.imgs.ovh/2025/07/19/MSLCd.jpeg" alt="头像" loading="lazy" />
       <div class="header-info">
         <span class="username">奥利奥去利</span>
         <span class="date">{{ date }}</span>
@@ -20,44 +16,44 @@
 
     <!-- 内容（不使用 v-html，只渲染普通文字） -->
     <div class="rambling-content">{{ content }}</div>
-    
+
     <!-- 图片区域（如果有图） -->
     <div v-if="img_url" class="rambling-image">
       <img :src="img_url" alt="配图" />
     </div>
 
     <!-- 底部：点赞和评论 -->
-<!--     <div class="rambling-footer">
+    <!--     <div class="rambling-footer">
       <BtnComment class="action" ></BtnComment>
        <BtnLike class="action" @click="handleLike(id)" >
         <template v-slot>
           {{ like_count }}
         </template>
-      </BtnLike>
-    </div> -->
+</BtnLike>
+</div> -->
 
   </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'MomentsCard',
-  data(){
-    return{
+  data() {
+    return {
 
     }
   },
-  computed:{
+  computed: {
     ...mapState({
-       role: state => state.user.role
+      role: state => state.user.role
     }),
   },
-  components:{
+  components: {
 
   },
   props: {
-    id:{
+    id: {
       type: Number,
       required: true
     },
@@ -73,24 +69,25 @@ export default {
       type: String,
       default: ''
     },
-    like_count:{
+    like_count: {
       type: Number,
       required: true
     },
   },
-  methods:{
-    handleDelRam(id){
-      this.$bus.$emit('handlePost','/api/delete_rambling',{id})
-      this.$bus.$emit('handleGet','/api/get_ramblings')
+  methods: {
+    handleDelRam(id) {
+      this.$store.dispatch('post', { url: '/api/delete_rambling', payload: { id } })
+      this.$store.dispatch('get', '/api/get_ramblings')
     },
-   
+
   },
 }
 </script>
 
 <style scoped>
 .rambling-card {
-  position: relative; /* 为删除按钮绝对定位做准备 */
+  position: relative;
+  /* 为删除按钮绝对定位做准备 */
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -158,6 +155,7 @@ export default {
   text-align: center;
   margin-bottom: 12px;
 }
+
 .rambling-image img {
   max-width: 100%;
   border-radius: 10px;

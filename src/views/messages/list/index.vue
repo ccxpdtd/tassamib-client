@@ -1,5 +1,5 @@
 <template>
-  <transition-group name="slide-down" tag="div" class="message-list">
+  <transition-group name="slide-down" tag="div" class="message-list-container">
     <div v-for="(message) in messages" :key="message.id" class="message-card">
       <div class="avatar">
         {{ message.uname ? message.uname.charAt(0).toUpperCase() : '👤' }}
@@ -65,16 +65,13 @@ export default {
     handleComment(message_id) {
       const content = this.commentMap[message_id];
       if (!content) return;
-
       const payload = {
         message_id,
         username: this.uname,
         content
       };
-
-      this.$bus.$emit('handlePost', '/api/publish_comment', payload);
-      this.$bus.$emit('handleGet', '/api/get_messages');
-
+      this.$store.dispatch('post', { url: '/api/publish_comment', payload })
+      this.$store.dispatch('get', '/api/get_messages')
       this.$set(this.commentMap, message_id, '');
     }
   }
@@ -82,7 +79,7 @@ export default {
 </script>
 
 <style scoped>
-.message-list {
+.message-list-container {
   display: flex;
   flex-direction: column;
   gap: 16px;

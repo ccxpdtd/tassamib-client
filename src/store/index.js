@@ -21,23 +21,25 @@ const actions = {
   async get(context, url) {
     try {
       const res = await axios.get(url)
-      console.log('get请求结束', res.data)
-      switch (url) {
-        case '/api/get_messages':
-          context.commit('SETMESSAGES', res.data)
-          break
-        case '/api/get_articles':
-          context.commit('SETARTICLES', res.data)
-          break
-        case '/api/get_ramblings':
-          context.commit('SETRAMBLINGS', res.data)
-          break
-
-      }
-      return res.data.ok // ✅ 返回响应数据
+      // console.log('get请求结束', res.data)
+      context.dispatch('switchUrl', { url, data: res.data })
+      return res.data // ✅ 返回响应数据
     } catch (err) {
       console.error(err)
       throw err // ✅ 抛出错误，让组件处理
+    }
+  },
+  switchUrl(context, value) {
+    switch (value.url) {
+      case '/api/get_messages':
+        context.commit('SETMESSAGES', value.data)
+        break
+      case '/api/get_articles':
+        context.commit('SETARTICLES', value.data)
+        break
+      case '/api/get_ramblings':
+        context.commit('SETRAMBLINGS', value.data)
+        break
     }
   }
 }

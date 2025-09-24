@@ -1,14 +1,11 @@
 <!-- 文章列表 -->
 <template>
-  <div class="article-page">
+  <div class="article-container">
     <div class="article-list">
       <div class="article-card" v-for="(article, index) in articles" :key="index" @click="goToArticle(article.id)">
-
-        <div class="content">
-          <div class="title_delete_group">
-            <h2 class="title">{{ article.title }}</h2>
-
-          </div>
+        <!-- 文章介绍 -->
+        <div class="article-info">
+          <h2 class="title">{{ article.title }}</h2>
           <p class="description">{{ article.description }}</p>
           <div class="meta">
             <span class="author">{{ article.author }}</span>
@@ -17,25 +14,18 @@
         </div>
       </div>
     </div>
-    <div class="btn-publish">
-    </div>
   </div>
 </template>
-
 <script>
 import { mapState } from 'vuex'
-
 export default {
   name: "ArticleList",
-
   data() {
     return {
-
     };
   },
-
   mounted() {
-    this.$bus.$emit('handleGet', '/api/get_articles')
+    this.$store.dispatch('get', '/api/get_articles')
   },
   computed: {
     ...mapState({
@@ -45,28 +35,30 @@ export default {
     }),
   },
   methods: {
+    //点击文章跳转
     goToArticle(id) {
-      // 你可以用 vue-router 进行跳转
-      this.$router.push({ name: 'ArticleList', query: { id } });
+      this.$router.push({ name: 'myArticleDetail', query: { id } });
     },
-
-
   },
 };
 </script>
 
 <style scoped>
-.article-page {
+.article-container {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  /* margin-top: 65px; */
+
 }
 
 .article-list {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 50px;
   width: 60%;
-  margin: 50px auto;
+  margin: 0 auto;
   padding: 0 20px;
 }
 
@@ -86,13 +78,7 @@ export default {
   transform: translateY(-5px);
 }
 
-.cover {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.content {
+.article-info {
   padding: 35px;
 }
 
@@ -100,18 +86,16 @@ export default {
   flex: 1;
   font-size: 20px;
   font-weight: bold;
-  margin: 0 0 10px 0;
+  margin: 0 0 15px 0;
 }
 
 .description {
   color: #666;
   font-size: 15px;
   line-height: 1.6;
-  margin: 0px;
-  padding: 10px 0;
+  margin: 0 0 15px 0;
   white-space: pre-line;
 
-  /* margin-bottom: 12px; */
 }
 
 .meta {
@@ -119,34 +103,5 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   color: #999;
-  margin-top: 10px;
-}
-
-.title_delete_group {
-  display: flex;
-  flex-direction: row;
-}
-
-/* 删除按钮样式 */
-.delete-btn {
-  border: none;
-  background: transparent;
-  font-size: 18px;
-  color: #999;
-  cursor: pointer;
-  transition: color 0.3s;
-  line-height: 1;
-}
-
-.delete-btn:hover {
-  color: #f00;
-}
-
-.btn-publish {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 1000;
-  /* 确保按钮盖在其他内容上 */
 }
 </style>

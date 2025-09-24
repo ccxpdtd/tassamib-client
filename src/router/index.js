@@ -1,16 +1,16 @@
 import VueRouter from 'vue-router'
 
-import Home from '../page/Home.vue'
-import LoginRegister from '../page/LoginRegister.vue'
+import Home from '../layout/index.vue'
+import LoginRegister from '../views/login/index.vue'
 
-import BlogCard from '../page/BlogCard.vue'
+import BlogCard from '../views/articles/index.vue'
 // import OrbitLineAvatar from '../components/OrbitLineAvatar.vue'
-import MessageBoard from '../page/MessageBoard.vue'
+import MessageBoard from '../views/messages/index.vue'
 
 
-import ArticleList from '../page/ArticleList.vue'
-import Ramblings from '../page/Ramblings.vue'
-import tassamib from '../page/tassamib.vue'
+import ArticleDetail from '../views/articles/detail/index.vue'
+import Ramblings from '../views/ramblings/index.vue'
+import tassamib from '../views/tassamib/index.vue'
 
 
 const router = new VueRouter({
@@ -38,8 +38,8 @@ const router = new VueRouter({
         },
         {
           path: 'article_detail',
-          name: 'ArticleList',
-          component: ArticleList,
+          name: 'myArticleDetail',
+          component: ArticleDetail,
         },
 
       ]

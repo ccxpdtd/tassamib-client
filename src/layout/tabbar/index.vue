@@ -1,8 +1,8 @@
 <template>
-  <nav class="fixed-nav">
-    <ul class="nav-list">
-      <li class="nav-item" v-for="item in navItems" :key="item.id">
-        <router-link class="nav-font" :to="item.path">{{ item.text }}</router-link>
+  <nav class="tabbar-container">
+    <ul class="tabbar-list">
+      <li class="tabbar-item" v-for="item in navItems" :key="item.id">
+        <router-link class="tabbar-item-font" :to="item.path">{{ item.text }}</router-link>
       </li>
     </ul>
   </nav>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'NavbarDemo',
+  name: 'myTabbar',
   data() {
     return {
       navItems: [
@@ -28,46 +28,43 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-.fixed-nav {
+.tabbar-container {
   width: 100%;
-  height: 60px;
+  height: 100%;
   background-color: rgba(149, 150, 151, 0.1);
-  z-index: 1000;
-  font-family: 'Inter', sans-serif;
+  /* z-index: 1000; */
+  /* font-family: 'Inter', sans-serif; */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(4px);
+  /*元素背后的内容（而不是元素本身）应用模糊效果。*/
   display: flex;
-  align-items: center;
-  /* 垂直居中导航项 */
   justify-content: center;
+  align-items: center;
   /* 水平居中导航列表 */
 }
 
-.nav-list {
+.tabbar-list {
   display: flex;
   flex-direction: row;
-  /* 横向排列 */
-  align-items: center;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.nav-item {
+.tabbar-item {
   margin: 0 50px;
-  /* 左右间距 */
 }
 
-.nav-font {
-  color: rgb(88, 88, 88);
+.tabbar-item-font {
+  color: rgb(90, 90, 90);
   text-decoration: none;
   font-size: 17px;
   transition: color 0.3s;
-  font-weight: 430;
+  font-weight: 440;
 }
 
-.nav-font:hover {
-  color: #4c627c;
+.tabbar-item-font:hover {
+  color: #5b7696;
   cursor: pointer;
 }
 </style>

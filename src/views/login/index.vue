@@ -1,47 +1,22 @@
 <template>
   <div class="container" @submit.prevent="handleSubmit">
 
-    <form class="form" >
+    <form class="form">
 
       <p class="heading">{{ isLogin ? 'Login' : 'Register' }}</p>
 
-      <input
-        type="text" 
-        class="input"
-        v-model="form.uname"
-        placeholder="Username"
-        required minlength="1"
-      >
-      <input
-        class="input"
-        type='password'
-        placeholder="Password"
-        v-model="form.psw"
-        required minlength="6"
-      >
+      <input type="text" class="input" v-model="form.uname" placeholder="Username" required minlength="1">
+      <input class="input" type='password' placeholder="Password" v-model="form.psw" required minlength="6">
 
       <!-- 注册时显示确认密码 -->
-      <input
-        v-if="!isLogin"
-        class="input"
-        type="password"
-        placeholder="Confirm Password"
-        v-model="form.confirmPsw"
-        required
-        minlength="6"
-      />
+      <input v-if="!isLogin" class="input" type="password" placeholder="Confirm Password" v-model="form.confirmPsw"
+        required minlength="6" />
 
       <!-- 切换登录/注册 -->
-      <p class="login-or-register"
-         @click="isLogin = false"
-         v-if="isLogin"
-      >
+      <p class="login-or-register" @click="isLogin = false" v-if="isLogin">
         rigister
       </p>
-      <p class="login-or-register"
-         @click="isLogin = true"
-         v-else
-      >
+      <p class="login-or-register" @click="isLogin = true" v-else>
         login
       </p>
 
@@ -55,7 +30,7 @@
 <script>
 
 export default {
-  name:'LoginRegister',
+  name: 'LoginRegister',
   data() {
     return {
       isLogin: true,
@@ -66,26 +41,24 @@ export default {
       }
     }
   },
-  computed:{
+  computed: {
 
   },
   methods: {
-    async handleSubmit(){
+    async handleSubmit() {
 
-      const {uname, psw, confirmPsw} = this.form
-      if(!this.isLogin && psw !== confirmPsw) return alert('两次密码不一致')
-      
+      const { uname, psw, confirmPsw } = this.form
+      if (!this.isLogin && psw !== confirmPsw) return alert('两次密码不一致')
+
       const url = this.isLogin ? "/api/login" : "/api/register"
-      const payload = {uname, psw}
+      const payload = { uname, psw }
 
       try {
         const res = await this.$store.dispatch('post', { url, payload })
-
-        if (res.ok&&this.isLogin) {
+        if (res.ok && this.isLogin) {
           this.$router.push('/home/blogger_home')
           sessionStorage.setItem('token', res.token)
         }
-
       } catch (err) {
         alert('请求失败')
         console.error(err)
@@ -97,20 +70,27 @@ export default {
 </script>
 
 <style scoped>
-html, body, .container {
+html,
+body,
+.container {
   height: 100%;
   margin: 0;
 }
+
 .container {
   display: flex;
-  justify-content: center;  /* 水平居中 */
-  align-items: center;      /* 垂直居中 */
-  height: 100vh;            /* 占满视口高度 */
+  justify-content: center;
+  /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
+  height: 100vh;
+  /* 占满视口高度 */
 }
+
 .form {
   font-size: 18px;
-  width:270px;
-  height:auto;
+  width: 270px;
+  height: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -120,7 +100,7 @@ html, body, .container {
   transition: .4s ease-in-out;
   box-shadow: rgba(0, 0, 0, 0.4) 1px 2px 2px;
   align-items: center;
-  
+
 }
 
 .form:hover {
@@ -148,17 +128,17 @@ html, body, .container {
 
 .input:hover {
   box-shadow: 6px 6px 0px #969696,
-             -3px -3px 10px #ffffff;
+    -3px -3px 10px #ffffff;
 }
 
 .input:focus {
   background: #ffffff;
-  box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+  box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-.login-or-register{
-  color:rgb(87, 87, 87);
-  margin:28px;
+.login-or-register {
+  color: rgb(87, 87, 87);
+  margin: 28px;
   font-size: 15px;
   cursor: pointer;
 }
@@ -179,7 +159,7 @@ html, body, .container {
 
 .form .btn:hover {
   box-shadow: 6px 6px 0px #969696,
-             -3px -3px 10px #ffffff;
+    -3px -3px 10px #ffffff;
   transform: translateX(-0.5em) translateY(-0.5em);
 }
 
