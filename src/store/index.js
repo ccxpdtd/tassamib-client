@@ -11,7 +11,7 @@ const actions = {
   async post(context, value) {
     try {
       const res = await axios.post(value.url, value.payload)
-      console.log('post请求结束', res.data)
+      // console.log('post请求结束', res.data)
       return res.data // ✅ 返回响应数据
     } catch (err) {
       console.error(err)

@@ -77,7 +77,8 @@ export default {
   methods: {
     handleDelRam(id) {
       this.$store.dispatch('post', { url: '/api/delete_rambling', payload: { id } })
-      this.$store.dispatch('get', '/api/get_ramblings')
+      // this.$store.dispatch('get', '/api/get_ramblings')
+      this.$emit('delete')
     },
 
   },

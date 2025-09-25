@@ -9,7 +9,7 @@
     </div>
     <div class="rambling-card" v-for="ram in ramblings" :key="ram.id">
       <RamblingsCard :id="ram.id" :content="ram.content" :date="ram.created_at" :img_url="ram.img_url"
-        :like_count="ram.like_count" />
+        :like_count="ram.like_count" @delete="getRamblings" />
     </div>
   </div>
 </template>
@@ -38,8 +38,13 @@ export default {
     })
   },
   mounted() {
-    this.$store.dispatch('get', '/api/get_ramblings')
+    this.getRamblings()
   },
+  methods: {
+    getRamblings() {
+      this.$store.dispatch('get', '/api/get_ramblings')
+    }
+  }
 
 }
 </script>
