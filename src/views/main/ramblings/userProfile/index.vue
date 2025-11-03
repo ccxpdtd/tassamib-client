@@ -3,9 +3,9 @@
   <div class="user-profile-caontainer card">
     <div class="background"></div>
     <div class="user-profile">
-      <img class="avatar" src='https://i.imgs.ovh/2025/07/19/MSLCd.jpeg' alt="用户头像" loading="lazy" />
+      <img class="avatar" :src='admin.avatar' alt="用户头像" loading="lazy" />
       <div class="user-info">
-        <h2 class="username">奥利奥去利</h2>
+        <h2 class="username">{{ admin.name }}</h2>
         <p class="bio">这个人很懒，什么都没有留下</p>
       </div>
     </div>
@@ -13,8 +13,27 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: "UserProfile",
+  data() {
+    return {
+      admin: {}
+    }
+  },
+  mounted() {
+    this.getAdminInfo()
+  },
+  methods: {
+    ...mapActions('rambling', ['rambling_get']),
+    async getAdminInfo() {
+      const res = await this.rambling_get('/api/get_adminInfo')
+      if (res.code === 200)
+        this.admin = res.admin
+      else
+        Notification({ type: 'error', message: res.msg })
+    }
+  }
 
 }
 </script>
@@ -29,7 +48,10 @@ export default {
 }
 
 .background {
-  background-image: url('https://i.imgs.ovh/2025/07/19/MSFtO.jpeg');
+  /* background-image: url('https://i.imgs.ovh/2025/07/19/MSFtO.jpeg'); */
+  background-image: url('https://i.imgs.ovh/2025/11/03/7mdET4.jpeg');
+
+
   background-size: cover;
   background-position: center;
   height: 350px;

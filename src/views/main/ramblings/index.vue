@@ -4,46 +4,37 @@
       <UserProfile></UserProfile>
     </div>
 
-    <div class="publish-ramblings" v-show='role === "admin"'>
+    <div class="publish-ramblings" v-show="isAdmin()">
       <PubRamblings></PubRamblings>
     </div>
-    <div class="rambling-card" v-for="ram in ramblings" :key="ram.id">
-      <RamblingsCard :id="ram.id" :content="ram.content" :date="ram.created_at" :img_url="ram.img_url"
-        :like_count="ram.like_count" @delete="getRamblings" />
+    <div class="rambling-card">
+      <RamblingList></RamblingList>
     </div>
   </div>
 </template>
 
 <script>
+import parseToken from '../../../util/parseToken'
 import UserProfile from './userProfile/index.vue'
-import RamblingsCard from './ramblings/index.vue'
+import RamblingList from './list/index.vue'
 import PubRamblings from './pubulish/index.vue'
-import { mapState } from 'vuex'
+
 export default {
   name: 'TestDemo',
-  data() {
-    return {
-
-    }
-  },
   components: {
     UserProfile,
-    RamblingsCard,
+    RamblingList,
     PubRamblings
   },
-  computed: {
-    ...mapState(['ramblings']),  // 直接绑定 Vuex 的 ramblings
-    ...mapState({
-      role: state => state.user.role
-    })
-  },
-  mounted() {
-    this.getRamblings()
-  },
+
+
   methods: {
-    getRamblings() {
-      this.$store.dispatch('get', '/api/get_ramblings')
-    }
+    isAdmin() {
+      const user = parseToken(localStorage.getItem('token'))
+      if (!user) return false
+      else return user.role === 'admin' ? true : false
+    },
+
   }
 
 }
@@ -51,7 +42,7 @@ export default {
 
 <style scoped>
 .rambling-container {
-  max-width: 800px;
+  max-width: 700px;
   height: 100%;
 
   margin: 0 auto;

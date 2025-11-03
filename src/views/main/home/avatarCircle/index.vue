@@ -21,7 +21,7 @@
 
         <!-- 中心头像 -->
         <div class="avatar">
-          <img src="https://i.imgs.ovh/2025/07/19/MSLCd.jpeg" alt="avatar" />
+          <img :src="admin.avatar" alt="avatar" />
         </div>
       </div>
     </transition>
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import 'animate.css'
 export default {
   name: "OrbitLineAvatar",
@@ -42,6 +43,7 @@ export default {
     //#endregion
 
     return {
+      admin: {},
       radius: 230,
       radius2: 170,
       speed: 18,
@@ -50,7 +52,18 @@ export default {
       innerIcons: [openai, vue, github, javascript, nodejs],
     };
   },
+  mounted() {
+    this.getAdminInfo()
+  },
   methods: {
+    ...mapActions('rambling', ['rambling_get']),
+    async getAdminInfo() {
+      const res = await this.rambling_get('/api/get_adminInfo')
+      if (res.code === 200)
+        this.admin = res.admin
+      else
+        Notification({ type: 'error', message: res.msg })
+    },
     getDotStyle(index, total, radius) {
       const angle = (360 / total) * index;
       return {

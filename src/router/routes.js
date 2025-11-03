@@ -1,13 +1,12 @@
 import Layout from '../layout/index.vue'
-
 import LoginRegister from '../views/login/index.vue'
+
 import Home from '../views/main/home/index.vue'
-
 import Articles from '../views/main/articles/index.vue'
-import Messages from '../views/main/messages/index.vue'
-
 import ArticleDetail from '../views/main/articles/detail/index.vue'
+import Messages from '../views/main/messages/index.vue'
 import Ramblings from '../views/main/ramblings/index.vue'
+import Settings from '../views/main/settings/index.vue'
 
 export const myRoutes = [
   {
@@ -56,7 +55,7 @@ export const myRoutes = [
         meta: {
           title: '碎碎念',
           hidden: false,
-          requireLoginAuth: true,
+          // requireLoginAuth: true,
         },
       },
       {
@@ -66,6 +65,16 @@ export const myRoutes = [
         meta: {
           title: '留言板',
           hidden: false,
+        },
+      },
+      {
+        path: 'settings',
+        name: 'mySettings',
+        component: Settings,
+        meta: {
+          title: '设置',
+          hidden: true,
+          requireLoginAuth: true,
         },
       },
     ]

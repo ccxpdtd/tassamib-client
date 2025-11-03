@@ -2,17 +2,18 @@
   <transition-group name="slide-down" tag="div" class="message-list-container">
     <div v-for="(message) in messages" :key="message.id" class="message-card">
       <div class="avatar">
-        {{ message.uname ? message.uname.charAt(0).toUpperCase() : '👤' }}
+        <img :src="message.user_avatar || 'https://pic.616pic.com/ys_img/00/06/27/5m1AgeRLf3.jpg'">
+
       </div>
 
       <div class="message-content">
         <div class="meta">
-          <span class="username">{{ message.username || "匿名用户" }}</span>
+          <span class="username">{{ message.user_name || "匿名用户" }}</span>
           <span class="dot">·</span>
-          <span class="time">{{ message.created_at }}</span>
+          <span class="time">{{ format(message.created_at) }}</span>
 
           <!-- 删除按钮 -->
-          <button class="delete-btn" v-show='role === "admin" || uname === message.username'
+          <button class="delete-btn" v-show='userInfo.role === "admin" || userInfo.id === message.user_id'
             @click="$emit('del-msg', message.id)">
             ✕
           </button>
@@ -20,23 +21,23 @@
         <div class="text">{{ message.content }}</div>
 
         <!-- 回复框架，嵌入在每条留言内 -->
-        <div class="reply-section">
-          <div class="reply-item" v-for="reply in message.replies" :key="reply.id">
-            <div class="reply-inner">
-              <span class="reply-username">{{ reply.username || '匿名用户' }}</span>
-              <span class="reply-dot">·</span>
-              <span class="reply-time">{{ reply.created_at }}</span>
-              <div class="reply-text">{{ reply.content }}</div>
-              <button class="delete-btn comment" v-show='role === "admin" || uname === reply.username'
-                @click="$emit('del-reply', reply.id, reply.message_id)">
+        <div class="comment-section">
+          <div class="comment-item" v-for="comment in message.comments" :key="comment.id">
+            <div class="comment-inner">
+              <span class="comment-username">{{ comment.user_name || '匿名用户' }}</span>
+              <span class="comment-dot">·</span>
+              <span class="comment-time">{{ format(comment.created_at) }}</span>
+              <div class="comment-text">{{ comment.content }}</div>
+              <button class="delete-btn comment" v-show='userInfo.role === "admin" || userInfo.id === comment.user_id'
+                @click="$emit('del-reply', comment.id, comment.message_id)">
                 ✕
               </button>
             </div>
           </div>
 
-          <div class="reply-input-wrapper">
-            <input type="text" class="reply-input" v-model="commentMap[message.id]" placeholder="写下你的回复..." />
-            <button class="reply-submit-btn" @click="handleComment(message.id)">发送</button>
+          <div class="comment-input-wrapper">
+            <input type="text" class="comment-input" v-model="commentMap[message.id]" placeholder="写下你的回复..." />
+            <button class="comment-submit-btn" @click="handleComment(message.id)">发送</button>
           </div>
         </div>
 
@@ -46,33 +47,56 @@
 </template>
 
 <script scoped>
-import { mapState } from 'vuex';
+import { Notification } from 'element-ui';
+import { mapState, mapActions } from 'vuex';
+import parseToken from '../../../../util/parseToken';
+import { formatTime } from '../../../../util/format';
+
 export default {
   name: "MessageList",
   data() {
     return {
-      commentMap: {}
+      commentMap: {},
+      userInfo: {}
     }
   },
   computed: {
-    ...mapState({
-      uname: state => state.user.username,
-      role: state => state.user.role,
-      messages: state => state.messages
-    }),
+    ...mapState('message', ['messages']),
+  },
+  mounted() {
+    this.getUserInfo()
   },
   methods: {
+
+    ...mapActions('message', ['message_post', 'message_get']),
+
+    getUserInfo() {
+      const user = parseToken(localStorage.getItem('token'))
+      if (!user) return
+      this.userInfo = {
+        id: user.id,
+        name: user.name,
+        role: user.role,
+        avatar: user.avatar
+      }
+    },
+
     handleComment(message_id) {
       const content = this.commentMap[message_id];
-      if (!content) return;
+      if (!content) return Notification({ type: 'warning', message: '请输入内容' });
+      if (!this.userInfo.id) return Notification({ type: 'warning', message: '请先登录' });
       const payload = {
         message_id,
-        username: this.uname,
+        user_id: this.userInfo.id,
         content
       };
-      this.$store.dispatch('post', { url: '/api/publish_comment', payload })
-      this.$store.dispatch('get', '/api/get_messages')
+
+      this.message_post({ url: '/api/publish_comment', payload })
+      this.message_get('/api/get_messages')
       this.$set(this.commentMap, message_id, '');
+    },
+    format(date) {
+      return formatTime(date)
     }
   }
 };
@@ -118,15 +142,18 @@ export default {
   transform: scale(1.03);
 }
 
-.avatar {
-  width: 60px;
-  height: 60px;
+
+
+.avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   font-size: 20px;
   background: #eee;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+
 }
 
 .message-content {
@@ -182,12 +209,12 @@ export default {
   white-space: pre-wrap;
 }
 
-.reply-section {
+.comment-section {
   padding: 0 72px 0 24px;
   border-left: 2px solid #eee;
 }
 
-.reply-item {
+.comment-item {
   margin-bottom: 8px;
   background-color: #f6f6f6;
   padding: 6px 10px;
@@ -196,26 +223,26 @@ export default {
   position: relative;
 }
 
-.reply-inner {
+.comment-inner {
   position: relative;
 }
 
-.reply-username {
+.comment-username {
   font-weight: 600;
   color: #2c3e50;
 }
 
-.reply-dot {
+.comment-dot {
   margin: 0 4px;
   color: #999;
 }
 
-.reply-time {
+.comment-time {
   color: #aaa;
   font-size: 12px;
 }
 
-.reply-text {
+.comment-text {
   margin-top: 2px;
   color: #333;
   word-wrap: break-word;
@@ -236,12 +263,12 @@ export default {
   color: #f00;
 }
 
-.reply-input-wrapper {
+.comment-input-wrapper {
   display: flex;
   margin-top: 6px;
 }
 
-.reply-input {
+.comment-input {
   flex: 1;
   padding: 4px 8px;
   font-size: 14px;
@@ -249,7 +276,7 @@ export default {
   border-radius: 4px;
 }
 
-.reply-submit-btn {
+.comment-submit-btn {
   margin-left: 8px;
   padding: 4px 12px;
   font-size: 14px;
@@ -290,16 +317,16 @@ export default {
     padding-right: 0;
   }
 
-  .reply-section {
+  .comment-section {
     padding: 0 0 0 12px;
   }
 
-  .reply-input-wrapper {
+  .comment-input-wrapper {
     flex-direction: column;
     gap: 6px;
   }
 
-  .reply-submit-btn {
+  .comment-submit-btn {
     width: 100%;
     margin-left: 0;
   }

@@ -17,24 +17,20 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: "ArticleList",
   data() {
-    return {
-    };
+    return {};
   },
   mounted() {
-    this.$store.dispatch('get', '/api/get_articles')
+    this.acticle_get('/api/get_articles')
   },
   computed: {
-    ...mapState({
-      uname: state => state.user.username,
-      role: state => state.user.role,
-      articles: state => state.articles,
-    }),
+    ...mapState('article', ['articles'])
   },
   methods: {
+    ...mapActions('article', ['acticle_get', 'acticle_post']),
     //点击文章跳转
     goToArticle(id) {
       this.$router.push({ name: 'myArticleDetail', query: { id } });

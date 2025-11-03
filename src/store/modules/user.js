@@ -1,34 +1,39 @@
 import axios from 'axios'
+import request from '../../api/request'
 
 // 模块内局部状态（仅存储用户相关数据）
 const state = {
-  user: {}
 }
 
 // 模块内同步修改方法
 const mutations = {
-  SET_USER(state, value) {
-    state.user = value
-  }
 }
 
 // 模块内异步操作（含独立请求逻辑）
 const actions = {
-  // 设置用户信息
-  setUser({ commit }, value) {
-    commit('SET_USER', value)
+  setUser(context, value) {
+    context.commit('SET_USER', value)
   },
-  // 登录请求（模块内独立封装 axios）
-  async login({ commit }, loginForm) {
+  async user_post(context, { url, payload }) {
     try {
-      const res = await axios.post('/api/login', loginForm)
-      commit('SET_USER', res.data.user)
-      return res.data
+      const res = await request.post(url, payload)
+      console.log('post请求结束', res)
+      return res // ✅ 返回响应数据
     } catch (err) {
-      console.error('登录请求失败', err)
-      throw err
+      console.error(err)
+      throw err // ✅ 抛出错误，让组件处理
     }
-  }
+  },
+  async user_get(context, { url, payload }) {
+    try {
+      const res = await axios.get(url, payload ? { params: { ...payload } } : undefined);
+      console.log('get请求结束', res.data)
+      return res.data // ✅ 返回响应数据
+    } catch (err) {
+      console.error(err)
+      throw err // ✅ 抛出错误，让组件处理
+    }
+  },
 }
 
 export default {

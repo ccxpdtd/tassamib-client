@@ -1,22 +1,20 @@
-// import axios from 'axios'
-import request from '../../api/request';
+import request from "../../api/request"
 
 // 模块内局部状态
 const state = {
-  articles: [],  // 文章列表
+  ramblings: [],
 }
 
 // 模块内同步修改方法
 const mutations = {
-  SET_ARTICLES(state, articles) {
-    state.articles = articles;
+  SET_RAMBLINGS(state, ramblings) {
+    state.ramblings = ramblings
   },
-
 }
 
 // 模块内异步操作（含独立请求逻辑）
 const actions = {
-  async acticle_post(context, { url, payload }) {
+  async rambling_post(context, { url, payload }) {
     try {
       const res = await request.post(url, payload)
       console.log('post请求结束', res)
@@ -26,7 +24,7 @@ const actions = {
       throw err // ✅ 抛出错误，让组件处理
     }
   },
-  async acticle_get(context, url) {
+  async rambling_get(context, url) {
     try {
       const res = await request.get(url)
       console.log('get请求结束', res)
@@ -40,8 +38,8 @@ const actions = {
 
   switchUrl(context, { url, res }) {
     switch (url) {
-      case '/api/get_articles':
-        context.commit('SET_ARTICLES', res.articles)
+      case '/api/get_ramblings':
+        context.commit('SET_RAMBLINGS', res.ramblings)
         break
     }
   }

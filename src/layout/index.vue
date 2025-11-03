@@ -16,11 +16,10 @@
 
 <script>
 import 'animate.css'
-import { jwtDecode } from 'jwt-decode'
+
 import Tabbar from './tabbar/index.vue'
 import myMain from './main/index.vue'
 import backgroundParticles from '../components/background/index.vue'
-import { mapState } from 'vuex'
 
 export default {
   name: 'myLayout',
@@ -29,30 +28,6 @@ export default {
     myMain,
     backgroundParticles,
   },
-  computed: {
-    ...mapState({
-      uname: state => state.user.username
-    }),
-  },
-  created() {
-    const token = sessionStorage.getItem('token')
-    if (token) {
-      try {
-        const payload = jwtDecode(token)
-        this.$store.dispatch('setUser', payload)
-      } catch (err) {
-        console.error('Token 解析失败:', err)
-        sessionStorage.removeItem('token')
-      }
-    }
-  },
-
-  mounted() {
-    this.$store.dispatch('get', '/api/get_ramblings')
-    this.$store.dispatch('get', '/api/get_messages')
-    this.$store.dispatch('get', '/api/get_articles')
-  },
-
 }
 </script>
 

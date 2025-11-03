@@ -9,8 +9,13 @@
 </template>
 
 <script scoped>
+
+import { Notification } from 'element-ui';
+
 import PublishMessage from './publish/index.vue';
 import MessageList from './list/index.vue';
+
+import { mapActions } from 'vuex';
 
 export default {
   name: "CommentDemo",
@@ -19,19 +24,28 @@ export default {
     MessageList,
   },
   methods: {
-    handleDelMsg(id) {
+    ...mapActions('message', ['message_post', 'message_get']),
+    async handleDelMsg(id) {
       const payload = { id }
-      this.$store.dispatch('post', { url: '/api/delete_message', payload })
-      this.$store.dispatch('get', '/api/get_messages')
+      const res = await this.message_post({ url: '/api/delete_message', payload })
+      Notification({
+        type: res.code === 200 ? 'success' : 'error',
+        message: res.msg
+      })
+      this.message_get('/api/get_messages')
     },
-    handleDelReply(id, mid) {
+    async handleDelReply(id, mid) {
       const payload = { id, mid }
-      this.$store.dispatch('post', { url: '/api/delete_reply', payload })
-      this.$store.dispatch('get', '/api/get_messages')
+      const res = await this.message_post({ url: '/api/delete_reply', payload })
+      Notification({
+        type: res.code === 200 ? 'success' : 'error',
+        message: res.msg
+      })
+      this.message_get('/api/get_messages')
     }
   },
   mounted() {
-    this.$store.dispatch('get', '/api/get_messages')
+    this.message_get('/api/get_messages')
   }
 };
 </script>

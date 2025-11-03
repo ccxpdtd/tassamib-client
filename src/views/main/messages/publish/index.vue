@@ -6,6 +6,9 @@
 </template>
 
 <script scoped>
+import parseToken from '@/util/parseToken';
+import { Notification } from 'element-ui';
+import { mapActions } from 'vuex'
 export default {
   name: "PublishMessage",
   data() {
@@ -14,18 +17,33 @@ export default {
         username: "",
         message: "",
       },
+
     };
   },
+  mounted() {
+  },
   methods: {
-    submitMessage() {
-      if (!this.form.message) return alert('请输入内容');
+    ...mapActions('message', ['message_post', 'message_get']),
+
+    async submitMessage() {
+      if (!this.form.message)
+        return Notification({ type: 'warning', message: '请输入内容' });
+
+      const user = parseToken(localStorage.getItem('token'))
+      if (!user)
+        return Notification({ type: 'warning', message: '请先登录' });
       const payload = {
-        uname: this.$store.state.user.username,
+        user_id: user.id,
         msg: this.form.message
       };
-      this.$store.dispatch('post', { url: '/api/publish_message', payload })
-      this.$store.dispatch('get', '/api/get_messages')
+
+      const res = await this.message_post({ url: '/api/publish_message', payload })
+      Notification({
+        type: res.code === 200 ? 'success' : 'error',
+        message: res.msg
+      })
       this.form.message = '';
+      this.message_get('/api/get_messages')
     }
   }
 };

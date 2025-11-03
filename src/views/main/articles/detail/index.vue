@@ -15,11 +15,10 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// import { mapState } from 'vuex'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css' // 高亮样式，可换其他主题
+import { mapActions } from 'vuex'
 
 export default {
   name: 'articleDetail',
@@ -34,17 +33,18 @@ export default {
     this.getArticle()
   },
   methods: {
+    ...mapActions('article', ['acticle_get', 'acticle_post']),
     async getArticle() {
       const id = this.$route.query.id
       try {
-        const article = await this.$store.dispatch('get', `/api/get_article/${id}`)
-        this.content = article.content
+        const res = await this.acticle_get(`/api/get_article/${id}`)
+        this.content = res.article.content
         this.generateHtmlAndToc()
       } catch (error) {
         console.log(error);
       }
-
     },
+
     generateHtmlAndToc() {
       const md = new MarkdownIt({
         html: true,

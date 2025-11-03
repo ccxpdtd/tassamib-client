@@ -10,33 +10,58 @@
     </ul>
     <!-- 右侧用户信息、设置、登录/登出 -->
     <div class="user-info">
-      <img src="https://ts3.tc.mm.bing.net/th/id/OIP-C.akEXjXSun7zbVDGMJUegdgHaHa?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3"
-        alt="" class="user-avatar">
-      <span class="user-name">user-name</span>
-      <i class="el-icon-setting settings" size="20"></i>
-      <el-button class="login-button">登录</el-button>
+      <img :src="userInfo.avatar || 'https://pic.616pic.com/ys_img/00/06/27/5m1AgeRLf3.jpg'" alt="" class="user-avatar">
+      <span class="user-name">{{ userInfo.name || '游客' }}</span>
+      <i class="el-icon-setting settings" size="20" @click="goToSettings"></i>
+      <el-button class="login-button" @click="loginOrLogout">{{ userInfo.name ? '退出登录' : '登录' }}</el-button>
     </div>
   </nav>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { myRoutes } from '../../router/routes';
+import parseToken from '../../util/parseToken';
+import { Notification } from 'element-ui';
 
 export default {
   name: 'myTabbar',
   data() {
     return {
       myTabbarRoutes: [],
+      userInfo: {}
     };
   },
   mounted() {
     this.getRoutes()
+    this.getUserInfo()
   },
   methods: {
+    ...mapActions('user', ['user_get']),
     getRoutes() {
       const myLayout = myRoutes.find(r => r.name === 'myLayout')
       this.myTabbarRoutes = myLayout.children.filter(r => !r.meta.hidden)
     },
+    async getUserInfo() {
+      const { id } = parseToken(localStorage.getItem('token'))
+      if (!id) return
+      const url = '/api/get_myinfo'
+      const payload = { id }
+      const res = await this.user_get({ url, payload })//user_get用的不是封装好的request
+
+      res.code === 200 ? this.userInfo = res.userInfo :
+        Notification({ type: 'error', message: res.msg })
+    },
+    loginOrLogout() {
+      const user = parseToken(localStorage.getItem('token'))
+      if (user)
+        localStorage.removeItem('token')
+      this.$router.push('/login')
+
+    },
+    goToSettings() {
+      this.$router.push({ name: 'mySettings' })
+    }
   }
 };
 </script>
